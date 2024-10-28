@@ -3,6 +3,10 @@ package com.ApnaMart.ApnaMart.Service;
 import com.ApnaMart.ApnaMart.Model.Product;
 import com.ApnaMart.ApnaMart.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +25,30 @@ public class ProductService {
         return productRepository.findById(prodId);
     }
 
-    public List<Product> AllProducts() {
+    public Page<Product> getProducts(int pageNumber, int pageSize, String sortBy, String sortDir) {
+        Sort sort;
+
+        // Support multiple sorting options
+        switch (sortBy) {
+            case "price":
+                sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                        ? Sort.by("price").ascending()
+                        : Sort.by("price").descending();
+                break;
+            case "category":
+                sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                        ? Sort.by("category").ascending()
+                        : Sort.by("category").descending();
+                break;
+            default:
+                sort = Sort.by("price").ascending();  // Default sorting
+        }
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        return productRepository.findAll(pageable);
+    }
+
+    public List<Product>allProduct(){
         return productRepository.findAll();
     }
 
