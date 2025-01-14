@@ -1,6 +1,7 @@
 package com.ApnaMart.ApnaMart.Service;
 
 import com.ApnaMart.ApnaMart.Model.Cart;
+import com.ApnaMart.ApnaMart.Model.Order;
 import com.ApnaMart.ApnaMart.Model.User;
 import com.ApnaMart.ApnaMart.Repository.CartRepository;
 import com.ApnaMart.ApnaMart.Repository.UserRepository;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -45,5 +48,17 @@ public class UserService {
 
     public List<User> AllUser() {
         return userRepository.findAll();
+    }
+
+    public List<Order> findAllOrderByUserId(Long userId){
+        Optional<User> UserOptional = userRepository.findById(userId);
+        if (UserOptional.isEmpty()) {
+            throw new RuntimeException("User not found with ID: " + userId);
+        }
+        User user = UserOptional.get();
+        if(user.getOrders().isEmpty()){
+           throw new RuntimeException("order list is empty");
+        }
+        return user.getOrders();
     }
 }

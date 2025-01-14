@@ -1,5 +1,6 @@
 package com.ApnaMart.ApnaMart.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,8 +35,12 @@ public class User implements UserDetails {
     private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
+
     private List<Order> orders;
+
+    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonBackReference("user-review")
+     private List<Review> reviews;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -62,12 +67,5 @@ public class User implements UserDetails {
         return true;
     }
 
-//    @PostPersist
-//    public void createCart() {
-//        if (this.cart == null) {
-//            Cart cart = new Cart();
-//            cart.setUser(this);
-//            this.cart = cart;
-//        }
-//    }
+
 }

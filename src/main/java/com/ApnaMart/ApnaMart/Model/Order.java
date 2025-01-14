@@ -1,5 +1,6 @@
 package com.ApnaMart.ApnaMart.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import java.util.List;
 @Table(name = "orders")
 public class Order {
     @Id
+   // @GeneratedValue(strategy = GenerationType.AUTO)
     private Long order_id;
     @ManyToMany
     @JoinTable(
@@ -28,7 +30,7 @@ public class Order {
     private List<Product> products;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
-
+    @JsonIgnore
     private User user;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;

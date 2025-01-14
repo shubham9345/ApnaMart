@@ -1,7 +1,9 @@
 package com.ApnaMart.ApnaMart.Controller;
 
 import com.ApnaMart.ApnaMart.Model.CategoryType;
+import com.ApnaMart.ApnaMart.Model.Order;
 import com.ApnaMart.ApnaMart.Model.Product;
+import com.ApnaMart.ApnaMart.Model.Review;
 import com.ApnaMart.ApnaMart.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -67,6 +69,11 @@ public class ProductController {
     public ResponseEntity<List<Product>> getBusinessesByCategoryType(@RequestParam CategoryType categoryType) {
         List<Product> businesses = productService.getProductType(categoryType);
         return ResponseEntity.ok(businesses);
+    }
+    @GetMapping("/All-reviews/{prodId}")
+    public ResponseEntity<List<Review>> AllReviewsByProdId(@PathVariable Long prodId) {
+        List<Review> reviews = productService.AllReviewsByProdId(prodId);
+        return ResponseEntity.ok(reviews);
     }
 
 }

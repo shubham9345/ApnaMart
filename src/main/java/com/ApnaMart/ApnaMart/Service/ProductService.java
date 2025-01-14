@@ -2,6 +2,8 @@ package com.ApnaMart.ApnaMart.Service;
 
 import com.ApnaMart.ApnaMart.Model.CategoryType;
 import com.ApnaMart.ApnaMart.Model.Product;
+import com.ApnaMart.ApnaMart.Model.Review;
+import com.ApnaMart.ApnaMart.Model.User;
 import com.ApnaMart.ApnaMart.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -86,5 +88,14 @@ public class ProductService {
     public List<Product> getProductType(CategoryType categoryType){
         List<Product> productList = productRepository.findBytypeOfProduct(categoryType);
         return productList;
+    }
+    public List<Review>AllReviewsByProdId(Long prodId){
+        Optional<Product> product = productRepository.findById(prodId);
+        if (product.isEmpty()) {
+            throw new RuntimeException("product not found with ID: " + prodId);
+        }
+        Product prod = product.get();
+        List<Review> reviews = prod.getReviews();
+        return reviews;
     }
 }

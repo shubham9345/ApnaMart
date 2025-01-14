@@ -13,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -66,6 +68,10 @@ public class AuthController {
                 .username(userDetails.getUsername()).build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
+    @GetMapping("/All-Orders/{userId}")
+    public ResponseEntity<List<Order>> addProductToCart(@PathVariable Long userId) {
+         List<Order> orders =    userService.findAllOrderByUserId(userId);
+            return ResponseEntity.ok(orders);
+    }
 
 }

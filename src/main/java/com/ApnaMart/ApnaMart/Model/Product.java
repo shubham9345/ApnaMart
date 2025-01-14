@@ -1,5 +1,6 @@
 package com.ApnaMart.ApnaMart.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -39,4 +40,8 @@ public class Product {
     private List<Cart> carts ;
     @Enumerated(EnumType.STRING)
     private CategoryType typeOfProduct;
+
+  @OneToMany(mappedBy = "products",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonManagedReference("product-review")
+    private List<Review> reviews;
 }
