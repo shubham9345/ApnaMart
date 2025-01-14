@@ -32,4 +32,14 @@ public class CartController {
         return cartService.AllCart();
     }
 
+    @PostMapping("/addProduct/{cartId}/{productId}")
+    public ResponseEntity<String> addProductToCart(@PathVariable Long cartId, @PathVariable Long productId) {
+        try {
+            cartService.addProductToCart(cartId, productId);
+            return ResponseEntity.ok("Product added to cart successfully!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

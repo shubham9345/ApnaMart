@@ -22,7 +22,6 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
-
     private String username;
     private String password;
     private String email;
@@ -62,4 +61,13 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+//    @PostPersist
+//    public void createCart() {
+//        if (this.cart == null) {
+//            Cart cart = new Cart();
+//            cart.setUser(this);
+//            this.cart = cart;
+//        }
+//    }
 }

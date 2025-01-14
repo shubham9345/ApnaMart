@@ -9,7 +9,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,18 +26,18 @@ public class SecurityConfig {
 
 
     @Bean
-
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .authorizeRequests()
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/api/**").authenticated()
-                .requestMatchers("api/admin").hasAnyAuthority("ADMIN")
-                .anyRequest().authenticated()  .and()
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-           //     .oauth2Login(Customizer.withDefaults())
-             //   .formLogin(Customizer.withDefaults());
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .cors(Customizer.withDefaults()) // Enable CORS
+                .authorizeRequests(auth -> auth
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers("/api/admin").hasAuthority("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
@@ -55,6 +54,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
         return builder.getAuthenticationManager();
     }
-
-
 }
