@@ -1,10 +1,8 @@
 package com.ApnaMart.ApnaMart.Controller;
 
-import com.ApnaMart.ApnaMart.Model.JwtRequest;
-import com.ApnaMart.ApnaMart.Model.JwtResponse;
-import com.ApnaMart.ApnaMart.Model.Role;
-import com.ApnaMart.ApnaMart.Model.User;
+import com.ApnaMart.ApnaMart.Model.*;
 import com.ApnaMart.ApnaMart.Security.JwtUtil;
+import com.ApnaMart.ApnaMart.Service.CartService;
 import com.ApnaMart.ApnaMart.Service.CustomUserDetailsService;
 import com.ApnaMart.ApnaMart.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +28,22 @@ public class AuthController {
     private CustomUserDetailsService userDetailsService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CartService cartService;
 
     @PostMapping("/signup")
     public ResponseEntity<User> signup(@RequestBody User user) {
         try {
             if (user.getRole() == null) {
-                user.setRole(Role.USER);
+                user.setRole(Role.USER); // Set default role if not provided
             }
+
+            // Save the user (Cart is created in UserService)
             User newUser = userService.save(user);
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         } catch (Exception e) {
+            // Log the error for debugging
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }

@@ -1,5 +1,6 @@
 package com.ApnaMart.ApnaMart.Service;
 
+import com.ApnaMart.ApnaMart.Model.CategoryType;
 import com.ApnaMart.ApnaMart.Model.Product;
 import com.ApnaMart.ApnaMart.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,5 +82,9 @@ public class ProductService {
         } else {
             throw new RuntimeException("Product not found with ID: " + productId);
         }
+    }
+    public List<Product> getProductType(CategoryType categoryType){
+        List<Product> productList = productRepository.findBytypeOfProduct(categoryType);
+        return productList;
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.ApnaMart.ApnaMart.Repository")
-//@EntityScan(basePackages = "com.ApnaMart.ApnaMart.Model")
+@EntityScan(basePackages = "com.ApnaMart.ApnaMart.Model")
 @EnableWebSecurity
 public class ApnaMartApplication {
 

@@ -1,5 +1,6 @@
 package com.ApnaMart.ApnaMart.Controller;
 
+import com.ApnaMart.ApnaMart.Model.CategoryType;
 import com.ApnaMart.ApnaMart.Model.Product;
 import com.ApnaMart.ApnaMart.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -60,6 +62,11 @@ public class ProductController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).build();
         }
+    }
+    @GetMapping("/product-category")
+    public ResponseEntity<List<Product>> getBusinessesByCategoryType(@RequestParam CategoryType categoryType) {
+        List<Product> businesses = productService.getProductType(categoryType);
+        return ResponseEntity.ok(businesses);
     }
 
 }
